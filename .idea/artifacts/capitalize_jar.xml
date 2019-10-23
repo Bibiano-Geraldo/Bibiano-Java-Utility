@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="capitalize:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/capitalize_jar</output-path>
+    <root id="archive" name="capitalize.jar">
+      <element id="module-output" name="utilitario" />
+    </root>
+  </artifact>
+</component>
