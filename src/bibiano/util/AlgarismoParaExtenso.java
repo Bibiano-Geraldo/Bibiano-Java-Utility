@@ -1,5 +1,9 @@
 package bibiano.util;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,15 +28,32 @@ public class AlgarismoParaExtenso {
      * O grupo mais a direita não possui nenhuma formatação, o segundo grupo a direita
      * pertencerá a casa dos "Mil" o terceiro a direita pertencerá a casa dos "milhões"
      * e assim sucessivamente.
+     * Idiomas disponíveis: Português (pt_PT), Inglês (en_US).
      * Programa feito por Bibiano Geraldo Mangue -> Bhibyano@gmail.com
      */
-    public static String paraExtenso(String numeroEmAlgarismo) {
+    public static String paraExtenso(String numeroEmAlgarismo, String lingua, String pais) {
+        Locale locale = new Locale(lingua, pais);
+
         StringBuilder getNumeroEmAlgarismo = new StringBuilder(numeroEmAlgarismo.
                 replaceAll("\\s+", "").
                 replaceAll(",", "."));
-        if (getNumeroEmAlgarismo.length() > 21)
-            throw new IndexOutOfBoundsException("Ops! O número " +
-                    getNumeroEmAlgarismo + " está fora do alcance.");
+
+        if (getNumeroEmAlgarismo.length() > 21) {
+
+            String resourceBundle = ResourceBundle.getBundle(
+                    "numbers_english", locale).getString("Ops!_O_número");
+            String resourceBundle1 = ResourceBundle.getBundle(
+                    "numbers_english", locale).getString("está_fora_do_alcance.");
+
+            if (locale.toString().equalsIgnoreCase("en_US")) {
+                throw new IndexOutOfBoundsException(resourceBundle + " " +
+                        getNumeroEmAlgarismo + " " + resourceBundle1);
+
+            } else {
+                throw new IndexOutOfBoundsException("Ops! O número " +
+                        getNumeroEmAlgarismo + " está fora do alcance.");
+            }
+        }
 
         final int posicaoDaUnidade = 2;
         final int posicaoDaDezena = 1;
@@ -73,94 +94,38 @@ public class AlgarismoParaExtenso {
         String mil = (getNumeroEmAlgarismo.substring(getNumeroEmAlgarismo.length() - 6, getNumeroEmAlgarismo.length() - 3));
         String base = (getNumeroEmAlgarismo.substring(getNumeroEmAlgarismo.length() - 3, getNumeroEmAlgarismo.length()));
 
-        boolean milhaoConcatValidation = Integer.parseInt(base) >= 1 || Integer.parseInt(mil) >= 1;
-        boolean bilhaoConcatValidation = Integer.parseInt(base) >= 1 || Integer.parseInt(mil) >= 1
-                || Integer.parseInt(milhao) >= 1;
-        boolean trilhaoConcatValidation = Integer.parseInt(base) >= 1 || Integer.parseInt(mil) >= 1
-                || Integer.parseInt(milhao) >= 1 || Integer.parseInt(bilhao) >= 1;
-        boolean quatrilhaoConcatValidation = Integer.parseInt(base) >= 1 || Integer.parseInt(mil) >= 1
-                || Integer.parseInt(milhao) > 1 || Integer.parseInt(bilhao) >= 1
-                || Integer.parseInt(trilhao) >= 1;
-        boolean quintilhaoConcatValidation = Integer.parseInt(base) >= 1 || Integer.parseInt(mil) >= 1
-                || Integer.parseInt(milhao) > 1 || Integer.parseInt(bilhao) >= 1
-                || Integer.parseInt(trilhao) >= 1 || Integer.parseInt(quatrilhao) >= 1;
-
         if (Integer.parseInt(mil) >= 1) {
-            if (Integer.parseInt(base) >= 1) {
-                concatMil = " mil e ";
-            } else {
-                concatMil = " mil ";
-            }
+            concatMil = " mil ";
         }
         if (Integer.parseInt(milhao) == 1) {
-            if (milhaoConcatValidation) {
-                concatMilhoes = " milhão e ";
-            } else {
-                concatMilhoes = " milhão ";
-            }
+            concatMilhoes = " milhão ";
         }
         if (Integer.parseInt(milhao) > 1) {
-            if (milhaoConcatValidation) {
-                concatMilhoes = " milhões e ";
-            } else {
-                concatMilhoes = " milhões ";
-            }
+            concatMilhoes = " milhões ";
         }
         if (Integer.parseInt(bilhao) == 1) {
-            if (bilhaoConcatValidation) {
-                concatBilhoes = " bilhão e ";
-            } else {
-                concatBilhoes = " bilhão ";
-            }
+            concatBilhoes = " bilhão ";
         }
         if (Integer.parseInt(bilhao) > 1) {
-            if (bilhaoConcatValidation) {
-                concatBilhoes = " bilhões e ";
-            } else {
-                concatBilhoes = " bilhões ";
-            }
+            concatBilhoes = " bilhões ";
         }
         if (Integer.parseInt(trilhao) == 1) {
-            if (trilhaoConcatValidation) {
-                concatTrilhoes = " trilhão e ";
-            } else {
-                concatTrilhoes = " trilhão ";
-            }
+            concatTrilhoes = " trilhão ";
         }
         if (Integer.parseInt(trilhao) > 1) {
-            if (trilhaoConcatValidation) {
-                concatTrilhoes = " trilhões e";
-            } else {
-                concatTrilhoes = " trilhões ";
-            }
+            concatTrilhoes = " trilhões ";
         }
         if (Integer.parseInt(quatrilhao) == 1) {
-            if (quatrilhaoConcatValidation) {
-                concatQuatrilhoes = " quatrilhão e ";
-            } else {
-                concatQuatrilhoes = " quatrilhão ";
-            }
+            concatQuatrilhoes = " quatrilhão ";
         }
         if (Integer.parseInt(quatrilhao) > 1) {
-            if (quatrilhaoConcatValidation) {
-                concatQuatrilhoes = " quatrilhões e ";
-            } else {
-                concatQuatrilhoes = " quatrilhões ";
-            }
+            concatQuatrilhoes = " quatrilhões ";
         }
         if (Integer.parseInt(quintilhao) == 1) {
-            if (quintilhaoConcatValidation) {
-                concatQuintilhoes = " quintilhão e ";
-            } else {
-                concatQuintilhoes = " quintilhão ";
-            }
+            concatQuintilhoes = " quintilhão ";
         }
         if (Integer.parseInt(quintilhao) > 1) {
-            if (quintilhaoConcatValidation) {
-                concatQuintilhoes = " quintilhões e ";
-            } else {
-                concatQuintilhoes = " quintilhões ";
-            }
+            concatQuintilhoes = " quintilhões ";
         }
 
         //aqui é a base
@@ -261,13 +226,57 @@ public class AlgarismoParaExtenso {
                 centenaMilhao + " " + dezenaMilhao + " " + unidadeMilhao + concatMilhoes +
                 centenaMil + " " + dezenaMil + " " + unidadeMil + concatMil +
                 centenaBase + " " + dezenaBase + " " + unidadeBase).
-                strip().replaceAll("\\s+", " ").
-                replaceAll("um mil ", "mil ");
+                replaceAll("\\s+", " ").
+                replaceAll("um mil ", "mil ").strip();
 
         if (resultadoFinal.matches("um mil")) {
             resultadoFinal = resultadoFinal.replace("um mil", "mil");
         }
-        return resultadoFinal;
+
+        resultadoFinal = resultadoFinal.replaceAll("\\s+|\\s[e]\\s", " e ");
+        resultadoFinal = resultadoFinal.replaceAll("e mil", "mil").
+                replaceAll("e bilhão", "bilhão").
+                replaceAll("e bilhões", "bilhões").
+                replaceAll("e trilhão", "trilhão").
+                replaceAll("e trilhões", "trilhões").
+                replaceAll("e quatrilhão", "quatrilhão").
+                replaceAll("e quatrilhões", "quatrilhões").
+                replaceAll("e quintilhão", "quintilhão").
+                replaceAll("e quintilhões", "quintilhões");
+
+        String regexToSearch = "\\w+([\\u00e3\\u00ea\\u00f5]\\w+)*";
+        Pattern pattern1 = Pattern.compile(regexToSearch);
+        Matcher matcher1 = pattern1.matcher(resultadoFinal);
+        String resourceBundle;
+        List<String> lista = new ArrayList<>();
+
+        if (locale.toString().equalsIgnoreCase("en_US")) {
+            while (matcher1.find()) {
+
+                String i = (matcher1.group());
+                resourceBundle = ResourceBundle.getBundle("numbers_english").getString(i);
+                lista.add((resourceBundle));
+                String regex = "[,]|\\[|[]]";
+                resultadoFinal = lista.toString().replaceAll(regex, "").
+                        replaceAll("\\s+one thousand", " thousand").
+                        replaceAll("thousand and", "thousand,").
+                        replaceAll("lion and", "lion,").
+                        replaceAll("ty and ", "ty-");
+
+            }
+        } else {
+            if (!locale.toString().equalsIgnoreCase("pt_PT")) {
+                System.out.println("Região não disponível, traduzindo para português...");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        return Capitalize.primeiroChar(resultadoFinal);
     }
 }
 

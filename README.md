@@ -20,6 +20,7 @@
       O grupo mais a direita não possui nenhuma formatação, o segundo grupo a direita
       pertencerá a casa dos "Mil" o terceiro a direita pertencerá a casa dos "milhões"
       e assim sucessivamente.
+	  Idiomas disponíveis: Português (pt_PT), Inglês (en_US).
 
 ###2. Capitalizar Strings na classe Capitalize.
 
